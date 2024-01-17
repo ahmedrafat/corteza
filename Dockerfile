@@ -1,14 +1,20 @@
-# build-stage
-FROM alpine:3 as build-stage
+FROM alpine:3.13 AS build-stage
 
-# use docker build --build-arg VERSION=2021.9.0 .
 ARG VERSION=2022.9.0
 ARG SASS_VERSION=1.69.5
-ARG SERVER_VERSION=${VERSION}
-ARG WEBAPP_VERSION=${VERSION}
-ARG CORTEZA_SERVER_PATH=https://releases.cortezaproject.org/files/corteza-server-${SERVER_VERSION}-linux-amd64.tar.gz
-ARG CORTEZA_WEBAPP_PATH=https://releases.cortezaproject.org/files/corteza-webapp-${WEBAPP_VERSION}.tar.gz
+
+ARG CORTEZA_SERVER_PATH=https://releases.cortezaproject.org/files/corteza-server-${VERSION}-linux-amd64.tar.gz
+ARG CORTEZA_WEBAPP_PATH=https://releases.cortezaproject.org/files/corteza-webapp-${VERSION}.tar.gz
 ARG SASS_URL=https://github.com/sass/dart-sass/releases/download/${SASS_VERSION}/dart-sass-${SASS_VERSION}-linux-x64.tar.gz
+
+RUN mkdir /tmp/server && mkdir /tmp/webapp
+RUN apk add --no-cache wget \
+    && wget -t 5 -O /tmp/server/corteza-server.tar.gz ${CORTEZA_SERVER_PATH} \
+    && wget -t 5 -O /tmp/webapp/corteza-webapp.tar.gz ${CORTEZA_WEBAPP_PATH} \
+    && wget -t 5 -O /tmp/dart-sass-${SASS_VERSION}-linux-x64.tar.gz ${SASS_URL}
+
+# Continue with other Dockerfile instructions
+
 
 RUN mkdir /tmp/server
 RUN mkdir /tmp/webapp
