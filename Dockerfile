@@ -6,6 +6,8 @@ FROM alpine:3.13 AS build-stage
 # Before running the mkdir command, it is good practice to ensure
 # that the directory does not already exist or is removed if it does.
 # The following commands will do that for /tmp/server and /tmp/webapp.
+RUN mkdir -p /tmp/server && mkdir -p /tmp/webapp
+
 RUN rm -rf /tmp/server /tmp/webapp \
     && mkdir /tmp/server \
     && mkdir /tmp/webapp
