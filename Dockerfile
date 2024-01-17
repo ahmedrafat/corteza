@@ -1,4 +1,17 @@
+# Use a specific version of Alpine to avoid any unexpected changes in 'latest'
 FROM alpine:3.13 AS build-stage
+
+# Continue with the ARGs and previous steps as before...
+
+# Before running the mkdir command, it is good practice to ensure
+# that the directory does not already exist or is removed if it does.
+# The following commands will do that for /tmp/server and /tmp/webapp.
+RUN rm -rf /tmp/server /tmp/webapp \
+    && mkdir /tmp/server \
+    && mkdir /tmp/webapp
+
+# Continue with your other Dockerfile instructions...
+
 
 ARG VERSION=2022.9.0
 ARG SASS_VERSION=1.69.5
